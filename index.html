@@ -1,0 +1,406 @@
+<!DOCTYPE html>
+<html lang="pt">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Portfolio CV - Deivid Vieira</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link
+      rel="stylesheet"
+      href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.0/css/all.min.css"
+    />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Fira+Code:wght@400;500;700&family=Roboto:wght@300;400;500;700&display=swap"
+      rel="stylesheet"
+    />
+    <!-- Novas Bibliotecas para PDF -->
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/jspdf/2.5.1/jspdf.umd.min.js"></script>
+    <script src="https://cdnjs.cloudflare.com/ajax/libs/html2canvas/1.4.1/html2canvas.min.js"></script>
+    <style>
+      :root {
+          --bg-dark: #1a202c;
+          --bg-light: #2d3748;
+          --primary: #4299e1; /* Azul */
+          --text-light: #e2e8f0;
+          --text-dark: #a0aec0;
+      }
+      body {
+          font-family: 'Roboto', sans-serif;
+          background-color: var(--bg-dark);
+          color: var(--text-light);
+      }
+      .font-code {
+          font-family: 'Fira Code', monospace;
+      }
+      .page {
+          background-color: #1f2937; /* Um pouco mais claro que o body */
+          width: 210mm;
+          min-height: 297mm;
+          margin: 1rem auto;
+          box-shadow: 0 0 10px rgba(0,0,0,0.5);
+      }
+      .section-title {
+          color: var(--primary);
+          font-family: 'Fira Code', monospace;
+          font-weight: 700;
+          font-size: 1.25rem;
+          margin-bottom: 1.5rem;
+          display: flex;
+          align-items: center;
+          gap: 0.75rem;
+      }
+      .skill-tag {
+          background-color: #2d3748;
+          color: #a0aec0;
+          font-family: 'Fira Code', monospace;
+          padding: 0.25rem 0.75rem;
+          border-radius: 9999px;
+          font-size: 0.875rem;
+          transition: all 0.2s ease-in-out;
+      }
+      .editable[contenteditable="true"] {
+          outline: 2px dashed var(--primary);
+          background-color: #2d3748;
+          cursor: text;
+          border-radius: 4px;
+          padding: 2px;
+      }
+      .action-buttons {
+          position: fixed;
+          bottom: 2rem;
+          right: 2rem;
+          display: flex;
+          flex-direction: column;
+          gap: 0.75rem;
+          z-index: 1000;
+      }
+      .action-button {
+          background-color: var(--primary);
+          color: var(--bg-dark);
+          width: 56px;
+          height: 56px;
+          border-radius: 50%;
+          display: flex;
+          align-items: center;
+          justify-content: center;
+          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
+          cursor: pointer;
+          transition: all 0.3s ease;
+          border: none;
+      }
+      .photo-upload-overlay {
+          position: absolute; top: 0; left: 0; width: 100%; height: 100%;
+          background-color: rgba(0,0,0,0.5); color: white; display: flex;
+          align-items: center; justify-content: center; border-radius: 50%;
+          opacity: 0; transition: opacity 0.3s ease; cursor: pointer;
+      }
+      .photo-container:hover .photo-upload-overlay { opacity: 1; }
+
+      /* Estilos da Página de Projetos */
+      .project-card {
+          background-color: #2d3748;
+          border-radius: 8px;
+          overflow: hidden;
+          display: flex;
+          flex-direction: column;
+          md:flex-direction: row;
+          margin-bottom: 2rem;
+          border: 1px solid #4a5563;
+      }
+      .project-image {
+          background-color: #4a5563;
+          height: 550px;
+          width: 750px;
+          background-size: cover;
+          background-position: center;
+      }
+      .project-content {
+          padding: 1.5rem;
+      }
+
+      @media print {
+          body { margin: 0; background-color: white; }
+          .page { margin: 0; box-shadow: none; }
+          .no-print { display: none !important; }
+          .page-break { page-break-before: always; }
+          .bg-gray-900, .bg-gray-800, .project-card {
+              -webkit-print-color-adjust: exact;
+              print-color-adjust: exact;
+          }
+      }
+    </style>
+  </head>
+  <body class="p-4 md:p-8">
+    <div id="cv-content">
+      <!-- PÁGINA 1 -->
+      <div class="page page-1">
+        <div id="grid-layout" class="grid grid-cols-1 md:grid-cols-12 h-full">
+          <!-- Coluna Esquerda -->
+          <aside class="md:col-span-4 bg-gray-800 p-8">
+            <div class="text-center mb-8">
+              <div class="relative w-32 h-32 mx-auto photo-container">
+                <img
+                  id="profile-photo"
+                  src="img/deivid.jpg"
+                  alt="Foto de Deivid Vieira"
+                  class="rounded-full w-32 h-32 object-cover border-4 border-blue-500"
+                />
+                <div
+                  id="photo-upload-button"
+                  class="photo-upload-overlay no-print"
+                >
+                  <i class="fas fa-camera fa-2x"></i>
+                </div>
+              </div>
+              <input
+                type="file"
+                id="photo-upload-input"
+                class="hidden"
+                accept="image/*"
+              />
+              <h1 class="editable text-3xl font-bold text-white mt-4">
+                DEIVID VIEIRA
+              </h1>
+              <h2 class="editable text-lg font-light text-blue-300 font-code">
+                &lt;Desenvolvedor Web /&gt;
+              </h2>
+            </div>
+            <div class="space-y-8">
+              <div>
+                <h3
+                  class="font-bold text-blue-400 uppercase tracking-wider mb-3 text-sm"
+                >
+                  Contacto
+                </h3>
+                <div class="space-y-3 text-sm">
+                  <p>
+                    <i class="fas fa-envelope fa-fw mr-3 text-blue-400"></i>
+                    <span class="editable">brotherdeivid@gmail.com</span>
+                  </p>
+                  <p>
+                    <i class="fab fa-linkedin fa-fw mr-3 text-blue-400"></i>
+                    <a
+                      href="https://www.linkedin.com/in/deivid-vieira-6803a171"
+                      target="_blank"
+                      ><span class="editable">/deivid-vieira</span></a
+                    >
+                  </p>
+                  <p>
+                    <i class="fab fa-github fa-fw mr-3 text-blue-400"></i>
+                    <a href="https://github.com/DeividVieiraa" target="_blank"
+                      ><span class="editable">/seu-github</span></a
+                    >
+                  </p>
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="font-bold text-blue-400 uppercase tracking-wider mb-3 text-sm"
+                >
+                  Formação
+                </h3>
+                <div class="editable text-sm space-y-3">
+                  <div>
+                    <p class="font-semibold">Análise e Desenv. de Sistemas</p>
+                    <p class="text-xs text-gray-400">
+                      Unigran Europa (2025 - Presente)
+                    </p>
+                  </div>
+                  <div>
+                    <p class="font-semibold">Programador de Informática (N4)</p>
+                    <p class="text-xs text-gray-400">
+                      Cesae Digital (2021 - 2023)
+                    </p>
+                  </div>
+                </div>
+              </div>
+              <div>
+                <h3
+                  class="font-bold text-blue-400 uppercase tracking-wider mb-3 text-sm"
+                >
+                  Idiomas
+                </h3>
+                <div class="editable text-sm space-y-1">
+                  <p>Português (Nativo)</p>
+                  <p>Inglês (Técnico/Intermédio)</p>
+                </div>
+              </div>
+            </div>
+          </aside>
+          <!-- Coluna Direita -->
+          <main class="md:col-span-8 p-8">
+            <section id="summary-section" class="mb-8">
+              <h2 class="section-title">// PERFIL PROFISSIONAL</h2>
+              <p
+                id="summary-content"
+                class="editable text-gray-300 leading-relaxed"
+              >              
+                Desenvolvedor Web Júnior com
+                competências fundamentais em <strong>Laravel</strong> e 
+                <strong>Vue.js</strong>, 
+                procurando uma oportunidadepara começar a minha carreira. Estou
+                focado em aprender os processos da equipa, evoluir com as
+                tecnologias utilizadas e contribuir de forma proativa para os
+                projetos. Sou motivado, com rápida capacidade de aprendizagem e
+                focado em evoluir com as melhores práticas de desenvolvimento,
+                pronto para contribuir positivamente para os objetivos da
+                equipa.
+              </p>
+            </section>
+            <section class="mb-8">
+              <h2 class="section-title">// Tech Stack</h2>
+              <div class="editable space-y-4">
+                <div>
+                  <h4 class="font-semibold text-gray-400 mb-2">Backend</h4>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="skill-tag">PHP</span
+                    ><span class="skill-tag">Laravel</span>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-400 mb-2">Frontend</h4>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="skill-tag">JavaScript</span
+                    ><span class="skill-tag">Vue.js</span
+                    ><span class="skill-tag">HTML5</span
+                    ><span class="skill-tag">CSS3</span
+                    ><span class="skill-tag">Bootstrap</span>
+                  </div>
+                </div>
+                <div>
+                  <h4 class="font-semibold text-gray-400 mb-2">
+                    Bases de Dados & Ferramentas
+                  </h4>
+                  <div class="flex flex-wrap gap-2">
+                    <span class="skill-tag">MySQL</span
+                    ><span class="skill-tag">Git</span
+                    ><span class="skill-tag">GitHub</span
+                    ><span class="skill-tag">Postman</span                   
+                  </div>
+                </div>
+              </div>
+            </section>
+            <section id="experience-section">
+              <h2 class="section-title">// Experiência</h2>
+              <div id="experience-content" class="editable">
+                <h3 class="font-bold text-blue-300">
+                  Desenvolvedor Web (Estágio)
+                </h3>
+                <p class="text-sm text-gray-400 mb-2">FTPPorto | 2022 - 2023</p>
+                <ul class="list-disc pl-5 text-sm text-gray-300 space-y-2">
+                  <li>
+                    Desenvolvimento e manutenção de aplicações web utilizando Laravel, PHP e JavaScript.
+                  </li>
+                  <li>
+                   Integração de bancos de dados MySQL para armazenamento e gerenciamento deinformações.
+                  </li>
+                  <li>
+                    Implementação de boas práticas de usabilidade e design responsivo.
+                  </li>
+                  <li>
+                   Colaboração em equipe no desenvolvimento de soluções para clientes.
+                  </li>
+                </ul>
+              </div>
+            </section>
+          </main>
+        </div>
+      </div>
+
+      <!-- PÁGINA 2 -->
+      <div class="page page-2 page-break">
+        <div class="p-8">
+          <h2 class="section-title">// Portfólio de Projetos</h2>
+          <div class="editable">
+            <!-- Projeto 1 -->
+            <div class="project-card">
+              <div
+                class="project-image"
+                style="
+                  background-image: url('img/Home_pc_builder.png');
+                "
+              ></div>
+              <div class="project-content">
+                <h3 class="text-2xl font-bold text-blue-300 mb-2">
+                  PC-Builder - Montador de PCs
+                </h3>
+                <div class="flex items-center gap-4 mb-4 text-sm">
+                  <a
+                    href="https://pc-builder-production.up.railway.app/"
+                    target="_blank"
+                    class="text-blue-400 hover:underline"
+                    ><i class="fas fa-external-link-alt mr-1"></i> Ver Online</a
+                  >
+                  <a
+                    href="https://github.com/DeividVieiraa/PC-Builder"
+                    target="_blank"
+                    class="text-gray-400 hover:underline"
+                    ><i class="fab fa-github mr-1"></i> Ver Código</a
+                  >
+                </div>
+                <p class="text-sm text-gray-300 mb-4">
+                  Desenvolvimento de uma aplicação web full-stack, concebida para simular a experiência de montar um computador personalizado. A plataforma permite que os utilizadores selecionem componentes individuais, valida a sua compatibilidade em tempo real, calcula o custo total e permite guardar e partilhar as configurações.
+                </p>
+                <h4 class="font-semibold text-gray-400 mb-2">
+                  Principais Funcionalidades:
+                </h4>
+                <h2>Arquitetura e Back-end (Laravel):</h2>
+                <ul class="list-disc pl-5 text-sm text-gray-300 mb-4">
+                  <li>
+                    Estruturação de uma API RESTful para gerir todas as operações de CRUD (Criar, Ler, Atualizar, Apagar) para componentes, utilizadores e configurações guardadas.
+                  </li>
+                  <li>Utilização do Eloquent ORM para modelar a base de dados e gerir os relacionamentos complexos entre as tabelas de componentes (CPU, Motherboard, RAM, etc.).</li>
+                  <li>Implementação da lógica de negócio para o sistema de validação de compatibilidade, que verifica as regras entre as peças selecionadas (ex: compatibilidade de socket do CPU com a motherboard).
+
+</li>
+                </ul>
+                <h2>Front-end e Experiência do Utilizador (Vue.js & Inertia.js):</h2>
+                <ul class="list-disc pl-5 text-sm text-gray-300 mb-4">
+                  <li>
+                    Criação de uma interface reativa no estilo Single-Page Application (SPA), proporcionando uma navegação fluida e sem recarregamentos de página.
+                  </li>
+                  <li>Desenvolvimento de componentes Vue reutilizáveis (como seletores de peças, sumário da montagem e modais de informação) para manter o código organizado e escalável.</li>
+                  <li>Gestão do estado da aplicação no lado do cliente para refletir as escolhas do utilizador em tempo real.
+
+</li>
+
+                </ul>
+                 <h2>Design e Visualização de Dados (TailwindCSS & Chart.js):</h2>
+                <ul class="list-disc pl-5 text-sm text-gray-300 mb-4">
+                  <li>
+                    Construção de uma interface de utilizador moderna e totalmente responsiva com o framework utilitário TailwindCSS.
+                  </li>
+                  <li>Integração da biblioteca Chart.js para renderizar gráficos dinâmicos, como o histórico de preços de um determinado componente, consumindo dados da API.</li>
+
+                </ul>
+                <h4 class="font-semibold text-gray-400 mb-2">
+                  Stack Tecnológico:
+                </h4>
+                <div class="flex flex-wrap gap-2">
+                  <span class="skill-tag">Laravel</span
+                  ><span class="skill-tag">Vue.js</span
+                  ><span class="skill-tag">Inertia.js</span
+                  ><span class="skill-tag">MySQL</span
+                  ><span class="skill-tag">TailwindCSS</span>
+                  <span class="skill-tag">Chart.js</span>
+                  <span class="skill-tag">Git</span
+                </div>
+              </div>
+            </div>
+          
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- Botões de Ação -->
+    <div class="action-buttons no-print">
+      <button id="edit-btn" class="action-button" title="Editar CV">
+        <i class="fas fa-pencil-alt"></i>
+      </button>
+      <button id="download-btn" class="action-button" title="Download PDF">
+        <i class="fas fa-file-pdf"></i>
+      </button>
+    </div>   
+  </body>
+</html>
