@@ -64,30 +64,7 @@
           cursor: text;
           border-radius: 4px;
           padding: 2px;
-      }
-      .action-buttons {
-          position: fixed;
-          bottom: 2rem;
-          right: 2rem;
-          display: flex;
-          flex-direction: column;
-          gap: 0.75rem;
-          z-index: 1000;
-      }
-      .action-button {
-          background-color: var(--primary);
-          color: var(--bg-dark);
-          width: 56px;
-          height: 56px;
-          border-radius: 50%;
-          display: flex;
-          align-items: center;
-          justify-content: center;
-          box-shadow: 0 4px 12px rgba(0,0,0,0.3);
-          cursor: pointer;
-          transition: all 0.3s ease;
-          border: none;
-      }
+      }     
       .photo-upload-overlay {
           position: absolute; top: 0; left: 0; width: 100%; height: 100%;
           background-color: rgba(0,0,0,0.5); color: white; display: flex;
@@ -339,38 +316,36 @@
                   >
                 </div>
                 <p class="text-sm text-gray-300 mb-4">
-                  Desenvolvimento de uma aplicação web full-stack, concebida para simular a experiência de montar um computador personalizado. A plataforma permite que os utilizadores selecionem componentes individuais, valida a sua compatibilidade em tempo real, calcula o custo total e permite guardar e partilhar as configurações.
+                  Desenvolvimento de uma aplicação full-stack para simulação interativa de configurações de hardware, com validação de compatibilidade em tempo real e gestão de dados escalável.
                 </p>
                 <h4 class="font-semibold text-gray-400 mb-2">
                   Principais Funcionalidades:
                 </h4>
                 <h2>Arquitetura e Back-end (Laravel):</h2>
                 <ul class="list-disc pl-5 text-sm text-gray-300 mb-4">
-                  <li>
-                    Estruturação de uma API RESTful para gerir todas as operações de CRUD (Criar, Ler, Atualizar, Apagar) para componentes, utilizadores e configurações guardadas.
-                  </li>
-                  <li>Utilização do Eloquent ORM para modelar a base de dados e gerir os relacionamentos complexos entre as tabelas de componentes (CPU, Motherboard, RAM, etc.).</li>
-                  <li>Implementação da lógica de negócio para o sistema de validação de compatibilidade, que verifica as regras entre as peças selecionadas (ex: compatibilidade de socket do CPU com a motherboard).
-
-</li>
+                  <li>Implementação de uma API RESTful seguindo padrões de projeto MVC, garantindo operações CRUD eficientes para entidades (componentes, utilizadores, configurações).</li>
+                  <li>Modelação relacional com Eloquent ORM para gestão de dependências complexas entre tabelas (ex.: relação one-to-many entre Motherboard e CPU , com validação de socket através de constraints).</li>
+                  <li>Desenvolvimento de um módulo de validação de compatibilidade com lógica baseada em regras (rule-based engine), incluindo verificações de especificações técnicas (ex.: suporte a PCIe 4.0 na motherboard, compatibilidade da memória RAM com o chipset).</li>
                 </ul>
-                <h2>Front-end e Experiência do Utilizador (Vue.js & Inertia.js):</h2>
+                <h2>FRONT-END & UX (Vue.js + Inertia.js):</h2>
                 <ul class="list-disc pl-5 text-sm text-gray-300 mb-4">
                   <li>
-                    Criação de uma interface reativa no estilo Single-Page Application (SPA), proporcionando uma navegação fluida e sem recarregamentos de página.
+                    Arquitetura SPA (Single-Page Application) com navegação otimizada via Inertia.js , reduzindo latência através de transições stateful sem recarregamento total.
                   </li>
-                  <li>Desenvolvimento de componentes Vue reutilizáveis (como seletores de peças, sumário da montagem e modais de informação) para manter o código organizado e escalável.</li>
-                  <li>Gestão do estado da aplicação no lado do cliente para refletir as escolhas do utilizador em tempo real.
-
-</li>
+                  <li>
+                   Componentização modular com Vue.js (ex.: ComponentSelector , BuildSummary , InfoModal ), seguindo princípios DRY e KISS para facilitar a manutenção.
+                  </li>
+                  <li>
+                    Gestão de estado distribuída via Vuex (ou alternativa semelhante) para sincronização reativa das escolhas do utilizador e atualizações do custo total em tempo real.
+                  </li>
 
                 </ul>
-                 <h2>Design e Visualização de Dados (TailwindCSS & Chart.js):</h2>
+                 <h2>UI & VISUALIZAÇÃO DE DADOS (TailwindCSS + Chart.js):</h2>
                 <ul class="list-disc pl-5 text-sm text-gray-300 mb-4">
                   <li>
-                    Construção de uma interface de utilizador moderna e totalmente responsiva com o framework utilitário TailwindCSS.
+                    Interface totalmente responsiva com sistema de grelha adaptativo e micro-interações, utilizando utility-first CSS do Tailwind para acelerar a prototipagem.
                   </li>
-                  <li>Integração da biblioteca Chart.js para renderizar gráficos dinâmicos, como o histórico de preços de um determinado componente, consumindo dados da API.</li>
+                  <li>Integração de Chart.js para visualização dinâmica de dados (ex.: gráficos de linhas para histórico de preços de componentes), consumindo endpoints da API através de pedidos HTTP assíncronos.</li>
 
                 </ul>
                 <h4 class="font-semibold text-gray-400 mb-2">
@@ -384,6 +359,8 @@
                   ><span class="skill-tag">TailwindCSS</span>
                   <span class="skill-tag">Chart.js</span>
                   <span class="skill-tag">Git</span
+                  <span class="skill-tag">Axios</span
+
                 </div>
               </div>
             </div>
